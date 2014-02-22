@@ -1,4 +1,4 @@
-module NinetyNine
+module NinetyNine10
 ( myLast
 , myButLast
 , elementAt
@@ -29,18 +29,18 @@ myButLast (x:xs) = myButLast xs
 elementAt :: Int -> [a] -> a
 elementAt _ [] = error "too few elements"
 elementAt 1 [x] = x
-elementAt n (x:xs) 
+elementAt n (x:xs)
         | n < 1 = error $ "value smaller than 1: " ++ (show n)
-	| n == 1 = x
+        | n == 1 = x
         | otherwise = elementAt (n-1) xs
 
 -- 4
 myLength :: [a] -> Int
-myLength = foldl (\acc x -> acc + 1) 0 
+myLength = foldl (\acc x -> acc + 1) 0
 
 -- 5
 myReverse :: [a] -> [a]
-myReverse = foldl (\acc x -> x:acc) [] 
+myReverse = foldl (\acc x -> x:acc) []
 
 idList :: [a] -> [a]
 idList = foldr (\acc x -> acc:x) []
