@@ -2,6 +2,10 @@ module NinetyNine20
 ( EncodeItem
 , encodeModified
 , decodeModified
+, encodeDirect
+, dupli
+, repli
+, dropEvery
 ) where
 
 import NinetyNine10
@@ -38,3 +42,17 @@ encodeDirect' num x [] = [encodeTupleToItem (num, x)]
 encodeDirect' num x (y:ys)
     | x == y = encodeDirect' (num+1) y ys
     | otherwise = encodeTupleToItem (num, x) : (encodeDirect' 1 y ys)
+
+dupli :: [a] -> [a]
+dupli xs = concatMap (replicate 2) xs
+
+repli :: [a] -> Int -> [a]
+repli xs n = concatMap (replicate n) xs
+
+dropEvery :: [a] -> Int -> [a]
+dropEvery xs n = dropEvery' xs n n
+
+dropEvery' :: [a] -> Int -> Int -> [a]
+dropEvery' [] _ _ = []
+dropEvery' (x:xs) n 1 = dropEvery' xs n n
+dropEvery' (x:xs) n count = x:(dropEvery' xs n (count-1))
