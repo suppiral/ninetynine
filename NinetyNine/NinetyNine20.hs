@@ -6,6 +6,7 @@ module NinetyNine20
 , dupli
 , repli
 , dropEvery
+, split
 ) where
 
 import NinetyNine10
@@ -56,3 +57,14 @@ dropEvery' :: [a] -> Int -> Int -> [a]
 dropEvery' [] _ _ = []
 dropEvery' (x:xs) n 1 = dropEvery' xs n n
 dropEvery' (x:xs) n count = x:(dropEvery' xs n (count-1))
+
+split :: Int -> [a] -> ([a],[a])
+split n xs = rev $ split' n [] xs
+    where rev (xs, ys) = (reverse xs, ys)
+
+split' :: Int -> [a] -> [a] -> ([a],[a])
+split' 0 xs ys = (xs, ys)
+split' n xs [] = (xs, [])
+split' n xs ys@(z:zs)
+    | n > 0 = split' (n-1) (z:xs) zs
+    | otherwise = split' (length ys + n) xs ys
