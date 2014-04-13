@@ -4,12 +4,17 @@ module NinetyNine28
 , rnd_select
 , diff_select
 , rnd_permu
-, combinations
+, combination
+, group
+, lsort
+, lfsort
 ) where
 
 import NinetyNine20
 import System.Random (randomRIO)
 import Control.Monad (replicateM)
+import Data.List (groupBy, sortBy)
+import Data.Function (on)
 
 -- 21
 insertAt :: a -> [a] -> Int -> [a]
@@ -74,3 +79,12 @@ mapSnd f ((x,y):rest) = (x, f y) : (mapSnd f rest)
 group [] _ = [[]]
 group (n:ns) xs = map f (combinations n xs)
     where f (g,rs) = concat $ map (g:) (group ns rs)
+
+
+-- 28
+
+lsort :: [[a]] -> [[a]]
+lsort = sortBy (compare `on` length)
+
+lfsort :: [[a]] -> [[a]]
+lfsort = concat . lsort . groupBy ((==) `on` length) . lsort
