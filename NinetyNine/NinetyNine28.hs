@@ -53,12 +53,24 @@ rnd_perm n = do
     return (num : rest)
 
 -- 26
-combinations :: Int -> [a] -> [[a]]
-combinations 0 _ = [[]]
-combinations n [] = []
-combinations n (x:xs)
-    | n <= length xs + 1 = (map (x:) (combinations (n-1) xs)) ++ (combinations n xs)
-    | otherwise = []
+combination :: Int -> [a] -> [[a]]
+combination n xs = map (fst) $ combinations n xs
 
 -- 27
+combinations :: Int -> [a] -> [([a],[a])]
+combinations 0 xs = [([],xs)]
+combinations n [] = []
+combinations n (x:xs)
+    | n <= length xs + 1 = (mapFst (x:) (combinations (n-1) xs)) ++ (mapSnd (x:) (combinations n xs))
+    | otherwise = []
+    
+mapFst :: (a -> b) -> [(a,c)] -> [(b,c)]
+mapFst f [] = []
+mapFst f ((x,y):rest) = (f x, y) : (mapFst f rest)
 
+mapSnd f [] = []
+mapSnd f ((x,y):rest) = (x, f y) : (mapSnd f rest)
+
+group [] _ = [[]]
+group (n:ns) xs = map f (combinations n xs)
+    where f (g,rs) = concat $ map (g:) (group ns rs)
