@@ -1,7 +1,7 @@
 module Arithmetics
 ( isPrime
 , primes
---, gcd
+, gcd
 --, coprime
 ) where
 
@@ -19,3 +19,9 @@ isPrime x
 
 primes :: [Int]
 primes = [n | n <- [2..], isPrime n]
+
+gcd' :: Int -> Int -> Int
+gcd' a b
+    | a < b = gcd' b a
+    | b == 0 = a
+    | otherwise = gcd' b (a `mod` b)
