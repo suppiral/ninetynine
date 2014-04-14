@@ -8,10 +8,13 @@ module Arithmetics
 , primeFactorsMult
 , multPrimeFactors
 , totient2
+, primesR
+, goldbach
 ) where
 
 import NinetyNine10 (encode)
 import Data.List (foldl')
+import Control.Applicative ((<$>), (<*>))
 
 mapWhile :: (a -> Bool) -> [a] -> Bool
 mapWhile f [] = False
@@ -73,3 +76,22 @@ multPrimeFactors = foldl' (*) 1 . map f
 totient2 :: Integral a => a -> a
 totient2 = floor . foldl' (*) 1.0 . map phiPk . primeFactorsMult
     where phiPk (p,k) = (fromIntegral p-1) * (fromIntegral p ** fromIntegral (k-1))
+
+
+-- 39
+primesR :: Integral a => a -> a -> [a]
+primesR n m = filter isPrime [n..m]
+
+-- 40
+
+goldbach :: Integral a => a -> (a,a)
+goldbach n = snd . head $ filter ((==) n . fst) $ (\x y -> (x+y,(x,y))) <$> primesR 2 n <*> primesR 2 n
+
+-- 41
+
+goldbachList :: Integral a => a -> a -> [(a,a)]
+goldbachList n m = (map goldbach . filter even) [n..m]
+
+goldbachList' :: Integral a => a -> a -> a -> [(a,a)]
+goldbachList' n m lim = filter ((<) lim . fst) (goldbachList n m)
+
