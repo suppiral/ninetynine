@@ -20,8 +20,12 @@ isPrime x
 primes :: [Int]
 primes = [n | n <- [2..], isPrime n]
 
-gcd' :: Int -> Int -> Int
+gcd' :: (Integral a) => a -> a -> a
 gcd' a b
     | a < b = gcd' b a
     | b == 0 = a
     | otherwise = gcd' b (a `mod` b)
+
+coprime :: (Integral a) => a -> a -> Bool
+coprime a b = gcd' a b == 1
+
