@@ -5,6 +5,9 @@ module Arithmetics
 , coprime
 , totient
 , primeFactors
+, primeFactorsMult
+, multPrimeFactors
+, totient2
 ) where
 
 import NinetyNine10 (encode)
@@ -55,6 +58,8 @@ primeFactors n
         (m:rest) ->  m : primeFactors (n `div` m)
         where potenNums x = takeWhile (<= x) primes
 
+-- 36
+
 primeFactorsMult :: Integral a => a -> [(a,Int)]
 primeFactorsMult = map flipTuple . encode . primeFactors
     where flipTuple (x,y) = (y,x)
@@ -62,3 +67,9 @@ primeFactorsMult = map flipTuple . encode . primeFactors
 multPrimeFactors :: Integral a => [(a, Int)] -> a
 multPrimeFactors = foldl' (*) 1 . map f
     where f (x,y) = x ^ y
+
+-- 37
+
+totient2 :: Integral a => a -> a
+totient2 = floor . foldl' (*) 1.0 . map phiPk . primeFactorsMult
+    where phiPk (p,k) = (fromIntegral p-1) * (fromIntegral p ** fromIntegral (k-1))
